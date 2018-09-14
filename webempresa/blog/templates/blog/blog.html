@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+  {% for post in posts%}
+    <section class="page-section cta">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-9 mx-auto">
+            <div class="cta-innerv text-center rounded">
+              <h2 class="section-heading mb-5">
+                <span class="section-heading-upper">{{post.published|date:"SHORT_DATE_FORMAT"}}</span> <!--Utilizando la  variable (post.published) llamamos la fecha de la publicacion y con (SHORT_DATE_FORMAT) damos el formato simple de salida de la fecha -->
+                <span class="section-heading-lower">{{post.title}}</span>
+              </h2>
+              <p class="mb-0">
+                <img class="mx-auto d-flex rounded img-fluid mb-3 mb-lg-0" src="{{post.image.url}}" alt=""> <!--la variable post.image estrae la imagen correspondiente segun contenido-->
+              </p>
+              <p class="mb-0 mbt">{{post.content|linebreaks}}</p> <!--"linebreacks" sirve para que puedas da saltos de liena en el editor de contenidos-->
+              <p class="mb-0 mbt">
+                <span class="section-heading-under">Publicado por <em><b>{{post.author}}</b></em> en <em>
+                    <em>
+                        {% for category in post.categories.all %} <!--en las categorias como son de relacion manytomany debemos hacer una manera especifica de llamarla a  la pnatalla con un for en(post.categories.all)-->
+                        <a href="{% url 'category' category.id %}" class="link">{{category.name}}</a>{% if not forloop.last %},{% endif %} <!--luego llamamos al nombre de la categoria y par el caso de varias categ. hacemos un for especial para que salte la coma al ultimo y solo le ponga al resto naterior al utlimo-->
+                        {% endfor %}
+                      </em>
+                </span>      
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endfor %}  
+{% endblock %}
+
+
+    
